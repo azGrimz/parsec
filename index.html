@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seu Nome · Desenvolvedor Backend</title>
+<meta name="description" content="Desenvolvedor backend .NET e Java com experiência em infraestrutura, integrações e DevOps.">
+<meta property="og:title" content="Seu Nome · Desenvolvedor Backend">
+<meta property="og:description" content="Backend .NET e Java · Infra e DevOps. Estudos de caso de sistemas em produção.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#07060d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='5' fill='%23eeecf8'/%3E%3Cellipse cx='16' cy='16' rx='14' ry='6' fill='none' stroke='%23a184ff' stroke-width='1.8' transform='rotate(-28 16 16)'/%3E%3Ccircle cx='27.5' cy='10.2' r='2.4' fill='%2372cdff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: deep-space single dark theme. Hero = thesis + orbital stack map; then mission logs, flagship project, trajectory, stack by experience level, contact. */
+:root {
+  --void: #07060d;        /* fundo: preto com viés violeta */
+  --hull: #100e1c;        /* superfícies */
+  --hull-2: #171428;
+  --line: #2a2542;        /* bordas e grades */
+  --starlight: #eeecf8;   /* texto principal */
+  --dust: #9d98b8;        /* texto secundário */
+  --nebula: #a184ff;      /* acento violeta */
+  --ion: #72cdff;         /* acento azul-gelo */
+  --signal: #6ee7a8;      /* status online */
+  --f-display: "Unbounded", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --s-1: .75rem; --s-2: 1rem; --s-3: 1.5rem; --s-4: 2.5rem; --s-5: 4rem; --s-6: 6rem;
+  --maxw: 1120px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--starlight);
+  font: 400 1rem/1.65 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--void); }
+#stars { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.nebula {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(60vmax 40vmax at 85% -10%, color-mix(in oklab, var(--nebula) 18%, transparent), transparent 70%),
+    radial-gradient(50vmax 35vmax at -10% 60%, color-mix(in oklab, var(--ion) 10%, transparent), transparent 70%);
+}
+main, header, footer { position: relative; z-index: 1; }
+.wrap {
+  max-width: var(--maxw); margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ion); outline-offset: 3px; border-radius: 4px; }
+
+.mono { font-family: var(--f-mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--dust); }
+
+/* Header */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in oklab, var(--void) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); padding-block: .8rem; }
+.brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; }
+.brand svg { width: 28px; height: 28px; flex: none; }
+.brand b { font: 500 .95rem/1 var(--f-display); letter-spacing: .02em; }
+.brand small { display: block; font: 400 .66rem/1.2 var(--f-mono); color: var(--dust); letter-spacing: .12em; text-transform: uppercase; margin-top: 3px; }
+nav { display: flex; align-items: center; gap: var(--s-3); }
+nav .links { display: flex; gap: var(--s-3); }
+nav .links a { text-decoration: none; font-size: .9rem; color: var(--dust); }
+nav .links a:hover { color: var(--starlight); }
+.lang { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.lang button {
+  background: none; border: 0; color: var(--dust); font: 500 .72rem/1 var(--f-mono);
+  padding: .45rem .7rem; cursor: pointer; letter-spacing: .08em;
+}
+.lang button[aria-pressed="true"] { background: var(--hull-2); color: var(--starlight); }
+@media (max-width: 760px) { nav .links { display: none; } }
+
+/* Hero */
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: var(--s-4); align-items: center; padding-block: var(--s-5) var(--s-5); }
+.hero .wrap > * { min-width: 0; }
+.telemetry { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin-bottom: var(--s-3); }
+.telemetry span { white-space: nowrap; }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--signal); margin-right: .45rem; box-shadow: 0 0 10px var(--signal); vertical-align: 1px; }
+h1 {
+  font: 500 clamp(2rem, 4.6vw, 3.6rem)/1.08 var(--f-display);
+  letter-spacing: -.02em; margin: 0 0 var(--s-3); text-wrap: balance;
+}
+h1 em { font-style: normal; color: var(--nebula); }
+h1 .ion { color: var(--ion); }
+.lede { font-size: 1.12rem; color: var(--dust); max-width: 56ch; margin: 0 0 var(--s-4); }
+.lede strong { color: var(--starlight); font-weight: 500; }
+.ctas { display: flex; flex-wrap: wrap; gap: var(--s-1); }
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem; text-decoration: none;
+  font: 500 .92rem/1 var(--f-body); padding: .85rem 1.2rem; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--hull); color: var(--starlight);
+  transition: border-color .2s, transform .2s;
+}
+.btn:hover { border-color: var(--dust); transform: translateY(-1px); }
+.btn.primary { background: var(--starlight); color: var(--void); border-color: var(--starlight); }
+
+.orbit-map { position: relative; }
+.orbit-map svg { width: 100%; max-width: 440px; height: auto; display: block; margin-inline: auto; overflow: visible; }
+.ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.ring.dash { stroke-dasharray: 2 6; }
+.spin { transform-box: view-box; transform-origin: 50% 50%; animation: spin linear infinite; }
+.spin.a { animation-duration: 28s; }
+.spin.b { animation-duration: 46s; animation-direction: reverse; }
+.spin.c { animation-duration: 70s; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+.orbit-label { font: 500 10.5px var(--f-mono); fill: var(--dust); letter-spacing: .08em; text-transform: uppercase; }
+.orbit-tech { font: 500 12px var(--f-body); fill: var(--starlight); }
+.legend { display: grid; gap: .35rem; margin-top: var(--s-2); max-width: 440px; margin-inline: auto; }
+.legend div { display: flex; gap: .6rem; font-size: .85rem; color: var(--dust); }
+.legend i { flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: .45rem; }
+
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; padding-block: var(--s-4); }
+  .orbit-map svg { max-width: 340px; }
+}
+
+/* Sections */
+section.block { padding-block: var(--s-6) 0; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-2); flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: var(--s-2); margin-bottom: var(--s-4); }
+h2 { font: 500 clamp(1.5rem, 2.8vw, 2.1rem)/1.15 var(--f-display); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h3 { font: 500 1.2rem/1.3 var(--f-display); margin: 0; text-wrap: balance; }
+
+/* Mission logs */
+.missions { display: grid; gap: var(--s-3); }
+.mission {
+  border: 1px solid var(--line); border-radius: 14px; background: color-mix(in oklab, var(--hull) 88%, transparent);
+  padding: var(--s-3); display: grid; gap: var(--s-3);
+}
+.mission header { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-2); flex-wrap: wrap; }
+.mission header > div { min-width: 0; display: grid; gap: .5rem; }
+.status { font: 500 .7rem/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; padding: .45rem .6rem; border-radius: 999px; border: 1px solid; white-space: nowrap; }
+.status.done { color: var(--signal); border-color: color-mix(in oklab, var(--signal) 40%, transparent); }
+.status.ongoing { color: var(--ion); border-color: color-mix(in oklab, var(--ion) 40%, transparent); }
+.log { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); margin: 0; }
+.log > div { min-width: 0; }
+.log dt { margin-bottom: .35rem; }
+.log dd { margin: 0; font-size: .93rem; color: var(--starlight); }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.chip { font: 500 .72rem/1 var(--f-mono); padding: .4rem .55rem; border-radius: 6px; background: var(--hull-2); color: var(--dust); border: 1px solid var(--line); }
+@media (max-width: 860px) { .log { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .log { grid-template-columns: 1fr; } }
+.note { font-size: .85rem; color: var(--dust); margin-top: var(--s-2); }
+
+/* Flagship project */
+.flagship { display: grid; grid-template-columns: .9fr 1.1fr; gap: var(--s-4); align-items: start; }
+.flagship > * { min-width: 0; }
+.flagship p { color: var(--dust); margin: var(--s-2) 0; max-width: 54ch; }
+.flagship ul { margin: 0 0 var(--s-3); padding-left: 1.1rem; color: var(--dust); }
+.flagship li { margin-bottom: .3rem; }
+.arch { border: 1px solid var(--line); border-radius: 14px; background: var(--hull); padding: var(--s-3); overflow-x: auto; }
+.arch svg { display: block; width: 100%; min-width: 520px; height: auto; }
+.arch .node rect { fill: var(--hull-2); stroke: var(--line); }
+.arch .node.hl rect { stroke: var(--nebula); }
+.arch .node.ai rect { stroke: var(--ion); }
+.arch text { font-family: var(--f-body); fill: var(--starlight); font-size: 13px; }
+.arch text.sub { font-family: var(--f-mono); fill: var(--dust); font-size: 10px; letter-spacing: .06em; }
+.arch .edge { stroke: var(--dust); stroke-width: 1.2; fill: none; marker-end: url(#arrow); }
+.arch .edge.async { stroke-dasharray: 4 4; stroke: var(--ion); }
+@media (max-width: 860px) { .flagship { grid-template-columns: 1fr; } }
+
+/* Trajectory */
+.trajectory { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-3); position: relative; }
+.trajectory::before { content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 1px; background: linear-gradient(90deg, var(--dust), var(--nebula), var(--ion)); opacity: .5; }
+.trajectory li { position: relative; padding-top: var(--s-3); min-width: 0; }
+.trajectory li::before { content: ""; position: absolute; top: 0; left: 0; width: 15px; height: 15px; border-radius: 50%; background: var(--void); border: 2px solid var(--dust); }
+.trajectory li.now::before { border-color: var(--nebula); box-shadow: 0 0 14px var(--nebula); }
+.trajectory li.next::before { border-style: dashed; border-color: var(--ion); }
+.trajectory h3 { font-size: 1rem; margin: .4rem 0; }
+.trajectory p { margin: 0; font-size: .9rem; color: var(--dust); }
+@media (max-width: 860px) {
+  .trajectory { grid-template-columns: 1fr; gap: var(--s-3); padding-left: var(--s-3); }
+  .trajectory::before { left: 7px; right: auto; top: 0; bottom: 0; width: 1px; height: auto; background: linear-gradient(180deg, var(--dust), var(--nebula), var(--ion)); }
+  .trajectory li { padding-top: 0; }
+  .trajectory li::before { left: calc(-1 * var(--s-3)); top: 4px; }
+}
+
+/* Stack */
+.stack { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+.stack > div { border: 1px solid var(--line); border-radius: 14px; padding: var(--s-3); min-width: 0; }
+.stack .lvl { display: flex; align-items: center; gap: .5rem; margin-bottom: var(--s-2); }
+.stack .lvl i { width: 8px; height: 8px; border-radius: 50%; }
+.stack dl { margin: 0; display: grid; gap: var(--s-2); }
+.stack dt { margin-bottom: .4rem; }
+.stack dd { margin: 0; }
+@media (max-width: 720px) { .stack { grid-template-columns: 1fr; } }
+
+/* Contact */
+.contact { padding-block: var(--s-6); }
+.contact .panel {
+  border: 1px solid var(--line); border-radius: 18px; padding: var(--s-4);
+  background:
+    radial-gradient(80% 120% at 100% 0%, color-mix(in oklab, var(--nebula) 16%, transparent), transparent 60%),
+    var(--hull);
+  display: grid; grid-template-columns: 1.2fr .8fr; gap: var(--s-4); align-items: end;
+}
+.contact .panel > * { min-width: 0; }
+.contact p { color: var(--dust); max-width: 48ch; margin: var(--s-2) 0 0; }
+.channels { display: grid; gap: .6rem; }
+.channel { display: flex; justify-content: space-between; align-items: center; gap: var(--s-1); padding: .8rem 1rem; border: 1px solid var(--line); border-radius: 10px; background: var(--void); text-decoration: none; }
+.channel:hover { border-color: var(--dust); }
+.channel span:last-child { font-family: var(--f-mono); font-size: .82rem; color: var(--dust); overflow-wrap: anywhere; text-align: right; }
+.copy { background: none; border: 1px solid var(--line); color: var(--dust); border-radius: 6px; padding: .3rem .5rem; font: 500 .7rem/1 var(--f-mono); cursor: pointer; }
+@media (max-width: 760px) { .contact .panel { grid-template-columns: 1fr; padding: var(--s-3); } }
+
+footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--s-1); padding-block: var(--s-3) var(--s-4); border-top: 1px solid var(--line); }
+.placeholder { color: var(--ion); }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="nebula" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Início">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="5" fill="var(--starlight)"/>
+        <ellipse cx="16" cy="16" rx="14" ry="6" fill="none" stroke="var(--nebula)" stroke-width="1.6" transform="rotate(-28 16 16)"/>
+        <circle cx="27.5" cy="10.2" r="2.2" fill="var(--ion)"/>
+      </svg>
+      <span><b class="placeholder">Seu Nome</b><small data-i18n="role">Backend .NET e Java · Infra e DevOps</small></span>
+    </a>
+    <nav aria-label="Principal">
+      <div class="links">
+        <a href="#casos" data-i18n="nav1">Estudos de caso</a>
+        <a href="#projeto" data-i18n="nav2">Projeto</a>
+        <a href="#trajetoria" data-i18n="nav3">Trajetória</a>
+        <a href="#contato" data-i18n="nav4">Contato</a>
+      </div>
+      <div class="lang" role="group" aria-label="Idioma">
+        <button type="button" id="lang-pt" data-lang="pt" aria-pressed="true">PT</button>
+        <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="telemetry mono">
+          <span><span class="dot"></span><span data-i18n="t1">Disponível</span></span>
+          <span data-i18n="t2">Brasil · UTC−3</span>
+          <span data-i18n="t3">Projeto atual: Data Recintos</span>
+        </div>
+        <h1><span data-i18n="h1a">Comecei na</span> <em data-i18n="h1b">infraestrutura.</em><br><span data-i18n="h1c">Hoje desenvolvo os</span> <span class="ion" data-i18n="h1d">sistemas que rodam nela.</span></h1>
+        <p class="lede" data-i18n="lede">Desenvolvedor backend com base em infraestrutura. Construo e mantenho integrações em produção com <strong>.NET</strong>, <strong>Java</strong> e bancos <strong>Oracle, SQL Server e PostgreSQL</strong>, do código ao container, do deploy ao log de erro às 2h da manhã.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#casos" data-i18n="cta1">Ver estudos de caso</a>
+          <a class="btn" href="#contato" data-i18n="cta2">Entrar em contato</a>
+        </div>
+      </div>
+
+      <div class="orbit-map" aria-label="Mapa da stack">
+        <svg viewBox="0 0 400 400" role="img" aria-labelledby="orbit-title">
+          <title id="orbit-title">Stack organizada em três camadas: linguagens, dados e infraestrutura</title>
+          <circle class="ring" cx="200" cy="200" r="78"/>
+          <circle class="ring dash" cx="200" cy="200" r="128"/>
+          <circle class="ring" cx="200" cy="200" r="178"/>
+          <circle cx="200" cy="200" r="34" fill="var(--hull-2)" stroke="var(--nebula)"/>
+          <text x="200" y="197" text-anchor="middle" class="orbit-label" style="fill:var(--starlight)">core</text>
+          <text x="200" y="211" text-anchor="middle" class="orbit-label">backend</text>
+
+          <g class="spin a">
+            <circle cx="278" cy="200" r="6" fill="var(--nebula)"/>
+            <circle cx="122" cy="200" r="4" fill="var(--nebula)" opacity=".6"/>
+          </g>
+          <g class="spin b">
+            <circle cx="200" cy="72" r="6" fill="var(--ion)"/>
+            <circle cx="290.5" cy="290.5" r="4" fill="var(--ion)" opacity=".6"/>
+          </g>
+          <g class="spin c">
+            <circle cx="22" cy="200" r="6" fill="var(--starlight)"/>
+            <circle cx="326" cy="74" r="3.5" fill="var(--starlight)" opacity=".5"/>
+          </g>
+
+          <text x="200" y="114" text-anchor="middle" class="orbit-tech">C# · Java · Python</text>
+          <text x="200" y="64" text-anchor="middle" class="orbit-tech" dy="-6">Oracle · SQL Server · PostgreSQL</text>
+          <text x="200" y="392" text-anchor="middle" class="orbit-tech">Docker · NGINX · GCP · Linux</text>
+        </svg>
+        <div class="legend">
+          <div><i style="background:var(--nebula)"></i><span data-i18n="lg1">Linguagens e frameworks (.NET 8, Spring Boot, FastAPI)</span></div>
+          <div><i style="background:var(--ion)"></i><span data-i18n="lg2">Dados e integrações (SQL, EF Core, APIs REST, JWT)</span></div>
+          <div><i style="background:var(--starlight)"></i><span data-i18n="lg3">Infraestrutura e operação (containers, cloud, monitoramento)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="casos">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 data-i18n="s1">Estudos de caso</h2>
+        <span class="mono" data-i18n="s1b">Estudos de caso · sistemas em produção</span>
+      </div>
+
+      <div class="missions">
+        <article class="mission">
+          <header>
+            <div>
+              <span class="mono">.NET · C#</span>
+              <h3 data-i18n="m1t">Migração de .NET 6 para .NET 8 em um produto em produção</h3>
+            </div>
+            <span class="status done" data-i18n="done">Concluída</span>
+          </header>
+          <dl class="log">
+            <div><dt class="mono" data-i18n="c">Contexto</dt><dd data-i18n="m1c">Plataforma que integra recintos alfandegados à Receita Federal, com vários serviços e clientes ativos.</dd></div>
+            <div><dt class="mono" data-i18n="p">Problema</dt><dd data-i18n="m1p">.NET 6 saindo de suporte e AutoMapper adicionando custo de manutenção e erros só em tempo de execução.</dd></div>
+            <div><dt class="mono" data-i18n="a">Ação</dt><dd data-i18n="m1a">Migrei para .NET 8 e troquei o AutoMapper pelo Mapperly, com mapeamentos gerados em tempo de compilação.</dd></div>
+            <div><dt class="mono" data-i18n="r">Resultado</dt><dd data-i18n="m1r">Runtime com suporte longo e erros de mapeamento detectados no build. <span class="placeholder">[adicione uma métrica]</span></dd></div>
+          </dl>
+          <div class="chips"><span class="chip">.NET 8</span><span class="chip">C#</span><span class="chip">Mapperly</span><span class="chip">EF Core</span></div>
+        </article>
+
+        <article class="mission">
+          <header>
+            <div>
+              <span class="mono">Performance · Oracle</span>
+              <h3 data-i18n="m2t">Consumo de memória em serviço de processamento em lote</h3>
+            </div>
+            <span class="status done" data-i18n="done">Concluída</span>
+          </header>
+          <dl class="log">
+            <div><dt class="mono" data-i18n="c">Contexto</dt><dd data-i18n="m2c">Windows Service processando grandes volumes de eventos em tabelas Oracle.</dd></div>
+            <div><dt class="mono" data-i18n="p">Problema</dt><dd data-i18n="m2p">Memória crescendo sem parar, cursores abertos (ORA-01000) e serviço preso em processamento.</dd></div>
+            <div><dt class="mono" data-i18n="a">Ação</dt><dd data-i18n="m2a">Investiguei com logs e métricas, ajustei o tamanho dos lotes, o ciclo de vida das conexões e o cancelamento do serviço.</dd></div>
+            <div><dt class="mono" data-i18n="r">Resultado</dt><dd data-i18n="m2r">Consumo estável e serviço encerrando corretamente. <span class="placeholder">[ex.: de X GB para Y MB]</span></dd></div>
+          </dl>
+          <div class="chips"><span class="chip">Windows Service</span><span class="chip">Oracle</span><span class="chip">Batching</span><span class="chip">Diagnóstico</span></div>
+        </article>
+
+        <article class="mission">
+          <header>
+            <div>
+              <span class="mono">Integrações · APIs</span>
+              <h3 data-i18n="m3t">Rastreio de cada evento enviado à Receita Federal</h3>
+            </div>
+            <span class="status ongoing" data-i18n="ongoing">Em andamento</span>
+          </header>
+          <dl class="log">
+            <div><dt class="mono" data-i18n="c">Contexto</dt><dd data-i18n="m3c">Eventos de pessoas, veículos e cargas enviados continuamente por vários clientes.</dd></div>
+            <div><dt class="mono" data-i18n="p">Problema</dt><dd data-i18n="m3p">Sem registro individual do envio e da resposta, investigar falhas por cliente era lento.</dd></div>
+            <div><dt class="mono" data-i18n="a">Ação</dt><dd data-i18n="m3a">Criei um serviço que registra cada envio e retorno, injetado no fluxo existente e integrado a um painel de monitoramento.</dd></div>
+            <div><dt class="mono" data-i18n="r">Resultado</dt><dd data-i18n="m3r">Cada evento rastreável do envio à resposta, com visão por cliente.</dd></div>
+          </dl>
+          <div class="chips"><span class="chip">APIs REST</span><span class="chip">Injeção de dependência</span><span class="chip">Monitoramento</span></div>
+        </article>
+      </div>
+      <p class="note" data-i18n="note">Detalhes de clientes e código proprietário foram omitidos.</p>
+    </div>
+  </section>
+
+  <section class="block" id="projeto">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 data-i18n="s2">Projeto principal: Flow Finance</h2>
+        <span class="mono" data-i18n="s2b">Código aberto · arquitetura distribuída</span>
+      </div>
+      <div class="flagship">
+        <div>
+          <p data-i18n="ff1">Plataforma de organização financeira que importa extratos e documentos e usa IA para interpretar e classificar os dados.</p>
+          <ul>
+            <li data-i18n="ff2">Importa PDF, CSV, TXT e OFX</li>
+            <li data-i18n="ff3">Processamento assíncrono com fila de mensagens</li>
+            <li data-i18n="ff4">Serviço de IA separado da API principal</li>
+          </ul>
+          <div class="ctas">
+            <a class="btn" href="#" data-i18n="ff5">Repositório no GitHub</a>
+            <a class="btn" href="#" data-i18n="ff6">Ver demo</a>
+          </div>
+        </div>
+        <div class="arch" role="img" aria-label="Arquitetura: Next.js chama a API Spring Boot, que publica no RabbitMQ; o serviço FastAPI consome a fila e usa OpenRouter; arquivos no MinIO e cache no Redis">
+          <svg viewBox="0 0 560 250">
+            <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--dust)"/></marker></defs>
+            <g class="node"><rect x="10" y="95" width="110" height="56" rx="8"/><text x="65" y="120" text-anchor="middle">Next.js</text><text class="sub" x="65" y="137" text-anchor="middle">FRONTEND</text></g>
+            <g class="node hl"><rect x="170" y="95" width="120" height="56" rx="8"/><text x="230" y="120" text-anchor="middle">Spring Boot</text><text class="sub" x="230" y="137" text-anchor="middle">API · JAVA 21</text></g>
+            <g class="node"><rect x="340" y="20" width="100" height="50" rx="8"/><text x="390" y="42" text-anchor="middle">RabbitMQ</text><text class="sub" x="390" y="58" text-anchor="middle">FILA</text></g>
+            <g class="node ai"><rect x="440" y="95" width="110" height="56" rx="8"/><text x="495" y="120" text-anchor="middle">FastAPI</text><text class="sub" x="495" y="137" text-anchor="middle">IA · PYTHON</text></g>
+            <g class="node"><rect x="340" y="180" width="100" height="50" rx="8"/><text x="390" y="202" text-anchor="middle">MinIO</text><text class="sub" x="390" y="218" text-anchor="middle">ARQUIVOS</text></g>
+            <g class="node"><rect x="180" y="190" width="100" height="44" rx="8"/><text x="230" y="210" text-anchor="middle">Redis</text><text class="sub" x="230" y="225" text-anchor="middle">CACHE</text></g>
+            <path class="edge" d="M120 123 H168"/>
+            <path class="edge async" d="M290 110 Q320 50 338 45"/>
+            <path class="edge async" d="M440 45 Q490 50 495 93"/>
+            <path class="edge" d="M290 136 Q320 205 338 205"/>
+            <path class="edge" d="M495 151 Q490 205 442 205"/>
+            <path class="edge" d="M230 151 V188"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="trajetoria">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 data-i18n="s3">Trajetória</h2>
+        <span class="mono" data-i18n="s3b">Da infraestrutura ao software</span>
+      </div>
+      <ol class="trajectory">
+        <li><span class="mono" data-i18n="tr1k">Início</span><h3 data-i18n="tr1t">Suporte e infraestrutura</h3><p data-i18n="tr1d">Windows Server, Linux, Active Directory, GPO e Google Workspace.</p></li>
+        <li><span class="mono" data-i18n="tr2k">Evolução</span><h3 data-i18n="tr2t">Cloud e containers</h3><p data-i18n="tr2d">GCP, Docker, NGINX, monitoramento com Grafana e automação em shell.</p></li>
+        <li class="now"><span class="mono" data-i18n="tr3k">Atual</span><h3 data-i18n="tr3t">Desenvolvimento e integrações</h3><p data-i18n="tr3d">.NET 8, APIs, certificados digitais, autenticação e sustentação em produção.</p></li>
+        <li class="next"><span class="mono" data-i18n="tr4k">Próximo passo</span><h3 data-i18n="tr4t">Arquitetura e times globais</h3><p data-i18n="tr4d">Sistemas distribuídos, cloud e decisões técnicas em equipes internacionais.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="stack">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 data-i18n="s4">Tecnologias</h2>
+        <span class="mono" data-i18n="s4b">Separado por nível real de uso</span>
+      </div>
+      <div class="stack">
+        <div>
+          <div class="lvl"><i style="background:var(--signal)"></i><span class="mono" data-i18n="lv1">Uso diário em produção</span></div>
+          <dl>
+            <div><dt class="mono" data-i18n="g1">Backend</dt><dd class="chips"><span class="chip">C#</span><span class="chip">.NET 8</span><span class="chip">EF Core</span><span class="chip">APIs REST</span><span class="chip">JWT</span></dd></div>
+            <div><dt class="mono" data-i18n="g2">Dados</dt><dd class="chips"><span class="chip">Oracle</span><span class="chip">SQL Server</span><span class="chip">PostgreSQL</span></dd></div>
+            <div><dt class="mono" data-i18n="g3">Operação</dt><dd class="chips"><span class="chip">Docker</span><span class="chip">NGINX</span><span class="chip">IIS</span><span class="chip">Linux</span><span class="chip">GCP</span></dd></div>
+          </dl>
+        </div>
+        <div>
+          <div class="lvl"><i style="background:var(--ion)"></i><span class="mono" data-i18n="lv2">Projetos e evolução</span></div>
+          <dl>
+            <div><dt class="mono" data-i18n="g1">Backend</dt><dd class="chips"><span class="chip">Java 21</span><span class="chip">Spring Boot</span><span class="chip">Python</span><span class="chip">FastAPI</span></dd></div>
+            <div><dt class="mono" data-i18n="g4">Mensageria e storage</dt><dd class="chips"><span class="chip">RabbitMQ</span><span class="chip">Redis</span><span class="chip">MinIO</span><span class="chip">AWS S3</span></dd></div>
+            <div><dt class="mono" data-i18n="g5">Frontend</dt><dd class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span></dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contato">
+    <div class="wrap">
+      <div class="panel">
+        <div>
+          <span class="mono" data-i18n="ck">Contato</span>
+          <h2 style="margin-top:.6rem" data-i18n="ct">Vamos construir algo que fique em pé em produção.</h2>
+          <p data-i18n="cp">Aberto a vagas de backend e integrações, no Brasil ou remoto internacional.</p>
+        </div>
+        <div class="channels">
+          <div class="channel"><span>E-mail</span><span><span id="mail" class="placeholder">voce@seudominio.dev</span> <button class="copy" type="button" id="copy-mail" data-i18n="copy">Copiar</button></span></div>
+          <a class="channel" href="#"><span>LinkedIn</span><span class="placeholder">/in/seu-perfil</span></a>
+          <a class="channel" href="#"><span>GitHub</span><span class="placeholder">@seu-usuario</span></a>
+          <a class="channel" href="#"><span data-i18n="cv">Currículo</span><span>PDF · PT / EN</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap mono">
+    <span data-i18n="f1">© 2026 · Seu Nome</span>
+    <span data-i18n="f2">Feito com HTML, CSS e JavaScript · hospedado no GitHub Pages</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // ---------- Starfield ----------
+  const c = document.getElementById('stars');
+  const ctx = c.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let stars = [], w = 0, h = 0, dpr = 1;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = c.clientWidth; h = c.clientHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round((w * h) / 5200);
+    stars = Array.from({ length: n }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() < .08 ? 1.4 : Math.random() * .9 + .2,
+      a: Math.random() * .6 + .25, p: Math.random() * Math.PI * 2,
+      hue: Math.random() < .15 ? (Math.random() < .5 ? '161,132,255' : '114,205,255') : '238,236,248'
+    }));
+    draw(0);
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, w, h);
+    for (const s of stars) {
+      const tw = reduce ? 1 : .75 + .25 * Math.sin(t / 1400 + s.p);
+      ctx.fillStyle = `rgba(${s.hue},${s.a * tw})`;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+  function loop(t) { draw(t); requestAnimationFrame(loop); }
+  addEventListener('resize', resize);
+  resize();
+  if (!reduce) requestAnimationFrame(loop);
+
+  // ---------- PT / EN ----------
+  const en = {
+    role: 'Backend .NET & Java · Infra & DevOps',
+    nav1: 'Case studies', nav2: 'Project', nav3: 'Journey', nav4: 'Contact',
+    t1: 'Available', t2: 'Brazil · UTC−3', t3: 'Current project: Data Recintos',
+    h1a: 'I started in', h1b: 'infrastructure.', h1c: 'Now I build the', h1d: 'systems that run on it.',
+    lede: 'Backend developer with an infrastructure background. I build and maintain production integrations with <strong>.NET</strong>, <strong>Java</strong> and <strong>Oracle, SQL Server and PostgreSQL</strong>, from code to container, from deploy to the 2 a.m. error log.',
+    cta1: 'See case studies', cta2: 'Get in touch',
+    lg1: 'Languages and frameworks (.NET 8, Spring Boot, FastAPI)',
+    lg2: 'Data and integrations (SQL, EF Core, REST APIs, JWT)',
+    lg3: 'Infrastructure and operations (containers, cloud, monitoring)',
+    s1: 'Case studies', s1b: 'Production systems',
+    done: 'Completed', ongoing: 'In progress',
+    c: 'Context', p: 'Problem', a: 'Action', r: 'Result',
+    m1t: 'Migrating a production product from .NET 6 to .NET 8',
+    m1c: 'A platform that connects bonded customs terminals to the Brazilian Federal Revenue, with several services and live clients.',
+    m1p: '.NET 6 was reaching end of support, and AutoMapper added maintenance cost and runtime-only errors.',
+    m1a: 'Migrated to .NET 8 and replaced AutoMapper with Mapperly, which generates mappings at compile time.',
+    m1r: 'Long-term-support runtime and mapping errors caught at build time. <span class="placeholder">[add a metric]</span>',
+    m2t: 'Memory growth in a batch processing service',
+    m2c: 'A Windows Service processing large volumes of events in Oracle tables.',
+    m2p: 'Memory kept growing, cursors stayed open (ORA-01000) and the service got stuck processing.',
+    m2a: 'Investigated with logs and metrics, then tuned batch size, connection lifetime and service cancellation.',
+    m2r: 'Stable memory usage and clean service shutdown. <span class="placeholder">[e.g. from X GB to Y MB]</span>',
+    m3t: 'Tracking every event sent to the Federal Revenue',
+    m3c: 'Person, vehicle and cargo events sent continuously by multiple clients.',
+    m3p: 'Without a per-event record of the request and response, investigating failures per client was slow.',
+    m3a: 'Built a service that records each request and response, injected into the existing flow and connected to a monitoring dashboard.',
+    m3r: 'Every event traceable from request to response, with a per-client view.',
+    note: 'Client details and proprietary code have been omitted.',
+    s2: 'Flagship project: Flow Finance', s2b: 'Open source · distributed architecture',
+    ff1: 'A personal finance platform that imports statements and documents and uses AI to interpret and categorize the data.',
+    ff2: 'Imports PDF, CSV, TXT and OFX', ff3: 'Asynchronous processing with a message queue', ff4: 'AI service separated from the main API',
+    ff5: 'GitHub repository', ff6: 'View demo',
+    s3: 'Journey', s3b: 'From infrastructure to software',
+    tr1k: 'Start', tr1t: 'Support and infrastructure', tr1d: 'Windows Server, Linux, Active Directory, GPO and Google Workspace.',
+    tr2k: 'Growth', tr2t: 'Cloud and containers', tr2d: 'GCP, Docker, NGINX, Grafana monitoring and shell automation.',
+    tr3k: 'Now', tr3t: 'Development and integrations', tr3d: '.NET 8, APIs, digital certificates, authentication and production support.',
+    tr4k: 'Next step', tr4t: 'Architecture and global teams', tr4d: 'Distributed systems, cloud and technical decisions in international teams.',
+    s4: 'Tech stack', s4b: 'Grouped by real level of use',
+    lv1: 'Daily use in production', lv2: 'Projects and growth',
+    g1: 'Backend', g2: 'Data', g3: 'Operations', g4: 'Messaging and storage', g5: 'Frontend',
+    ck: 'Contact', ct: 'Let’s build something that holds up in production.',
+    cp: 'Open to backend and integration roles, in Brazil or remote worldwide.',
+    copy: 'Copy', cv: 'Résumé',
+    f1: '© 2026 · Seu Nome', f2: 'Built with HTML, CSS and JavaScript · hosted on GitHub Pages'
+  };
+  const nodes = [...document.querySelectorAll('[data-i18n]')];
+  const pt = {};
+  nodes.forEach(n => { pt[n.dataset.i18n] = n.innerHTML; });
+  function setLang(l) {
+    const dict = l === 'en' ? en : pt;
+    nodes.forEach(n => { const v = dict[n.dataset.i18n]; if (v != null) n.innerHTML = v; });
+    document.documentElement.lang = l === 'en' ? 'en' : 'pt-BR';
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+    try { localStorage.setItem('lang', l); } catch (e) {}
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  let saved = 'pt';
+  try { saved = localStorage.getItem('lang') || 'pt'; } catch (e) {}
+  if (saved === 'en') setLang('en');
+
+  // ---------- Copy e-mail ----------
+  document.getElementById('copy-mail').addEventListener('click', async (e) => {
+    const btn = e.currentTarget, text = document.getElementById('mail').textContent;
+    const label = btn.textContent;
+    try { await navigator.clipboard.writeText(text); btn.textContent = '✓'; }
+    catch (err) { const r = document.createRange(); r.selectNodeContents(document.getElementById('mail')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    setTimeout(() => { btn.textContent = label; }, 1400);
+  });
+})();
+</script>
+</body>
+</html>
